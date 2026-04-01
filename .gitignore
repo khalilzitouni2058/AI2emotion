@@ -1,0 +1,93 @@
+# =========================
+# 🐍 Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# 📦 Virtual Environments
+# =========================
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# =========================
+# 📁 Build / Distribution
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# 🧪 Testing / Coverage
+# =========================
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# =========================
+# 🧠 ML / Model Cache (IMPORTANT)
+# =========================
+.cache/
+~/.cache/
+huggingface/
+*.pt
+*.pth
+*.bin
+
+# =========================
+# 📊 Data / Outputs
+# =========================
+*.csv
+*.json
+*.pkl
+
+# (keep if you don't want to push generated results)
+*_analysis.json
+
+# =========================
+# 🎵 Temp Audio Files
+# =========================
+temp_uploads/
+*.wav
+
+# =========================
+# 🌐 Streamlit
+# =========================
+.streamlit/
+.streamlit/secrets.toml
+
+# =========================
+# 📝 Logs
+# =========================
+*.log
+
+# =========================
+# 💻 OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🔧 IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# 🔐 Environment Variables
+# =========================
+.env
+.env.*
+
+# =========================
+# 🚀 Future API / Deployment
+# =========================
+*.sqlite3
+db.sqlite3
