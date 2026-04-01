@@ -91,3 +91,9 @@ Thumbs.db
 # =========================
 *.sqlite3
 db.sqlite3
+
+# =========================
+# pycache and other Python artifacts
+# =========================
+__pycache__/
+*.py[cod]
