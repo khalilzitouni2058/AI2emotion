@@ -17,6 +17,7 @@ from app.domain.schemas import (
 from app.infrastructure.model_provider import ModelProvider
 from app.services.audio_service import AudioService
 from app.services.smoothing_service import SmoothingService
+from app.services.text_service import TextService
 
 
 class EmotionService:
@@ -27,10 +28,12 @@ class EmotionService:
         model_provider: Optional[ModelProvider] = None,
         audio_service: Optional[AudioService] = None,
         smoothing_service: Optional[SmoothingService] = None,
+        text_service: Optional[TextService] = None,
     ) -> None:
         self.model_provider = model_provider or ModelProvider()
         self.audio_service = audio_service or AudioService()
         self.smoothing_service = smoothing_service or SmoothingService()
+        self.text_service = text_service or TextService()
 
     def _probs_to_dict(self, probabilities: torch.Tensor) -> Dict[str, float]:
         """Convert probability tensor to label-probability mapping."""
@@ -148,15 +151,16 @@ class EmotionService:
         )
 
         metadata = AnalysisMetadata(
-            audio_file=audio_path,
+            input_type="audio",
+            analysis_timestamp=datetime.now().isoformat(),
+            source_name=audio_path,
+            processing_mode="full_audio",
+            smoothing_method="none",
             total_duration=round(audio_duration, 3),
             total_chunks=1,
             window_size=round(audio_duration, 3),
             hop_size=round(audio_duration, 3),
             sampling_rate=settings.audio_sampling_rate,
-            smoothing_method="none",
-            analysis_timestamp=datetime.now().isoformat(),
-            processing_mode="full_audio",
             sub_window_size=settings.sub_window_size,
             sub_hop_size=settings.sub_hop_size,
         )
@@ -348,15 +352,16 @@ class EmotionService:
             )
 
         metadata = AnalysisMetadata(
-            audio_file=audio_path,
+            input_type="audio",
+            analysis_timestamp=datetime.now().isoformat(),
+            source_name=audio_path,
+            processing_mode="chunked",
+            smoothing_method=smoothing_method_used or settings.smoothing_method,
             total_duration=round(audio_duration, 3),
             total_chunks=len(predictions),
             window_size=window_size,
             hop_size=hop_size,
             sampling_rate=sampling_rate,
-            smoothing_method=smoothing_method_used or settings.smoothing_method,
-            analysis_timestamp=datetime.now().isoformat(),
-            processing_mode="chunked",
             sub_window_size=settings.sub_window_size,
             sub_hop_size=settings.sub_hop_size,
         )
@@ -373,12 +378,15 @@ class EmotionService:
             summary=summary,
         )
 
-    def analyze(self, audio_path: str) -> EmotionAnalysisResult:
+    def analyze_text(self, text: str) -> EmotionAnalysisResult:
         """
-        Main entrypoint for emotion analysis.
+        Analyze emotion from text input.
+        """
+        return self.text_service.analyze_text(text)
 
-        Chooses between full-audio prediction and chunked analysis
-        based on configured audio duration threshold.
+    def analyze_audio(self, audio_path: str) -> EmotionAnalysisResult:
+        """
+        Analyze emotion from audio input.
         """
         audio_duration, audio_array, sampling_rate = self.audio_service.get_audio_duration(
             audio_path
@@ -398,3 +406,33 @@ class EmotionService:
             window_size=settings.chunk_window_size,
             hop_size=settings.chunk_hop_size,
         )
+
+    def analyze(
+        self,
+        audio_path: Optional[str] = None,
+        text: Optional[str] = None,
+    ) -> EmotionAnalysisResult:
+        """
+        Main unified entrypoint for emotion analysis.
+
+        Supports:
+        - audio input
+        - text input
+
+        Args:
+            audio_path: Path to audio file
+            text: Input text
+
+        Returns:
+            EmotionAnalysisResult
+        """
+        if audio_path and text:
+            raise ValueError("Provide either audio_path or text, not both.")
+
+        if not audio_path and not text:
+            raise ValueError("You must provide either audio_path or text.")
+
+        if text is not None:
+            return self.analyze_text(text)
+
+        return self.analyze_audio(audio_path)

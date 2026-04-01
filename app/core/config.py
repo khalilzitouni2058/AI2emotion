@@ -7,8 +7,12 @@ from dataclasses import dataclass
 class Settings:
     """Central application settings."""
 
-    # Model settings
-    model_id: str = "firdhokk/speech-emotion-recognition-with-openai-whisper-large-v3"
+    # Audio model settings
+    audio_model_id: str = "firdhokk/speech-emotion-recognition-with-openai-whisper-large-v3"
+
+    # Text model settings (multilingual, supports Arabic)
+    text_model_id: str = "AnasAlokla/multilingual_go_emotions_V1.2"
+    max_text_length: int = 512
 
     # Audio processing settings
     audio_duration_threshold: float = 15.0
