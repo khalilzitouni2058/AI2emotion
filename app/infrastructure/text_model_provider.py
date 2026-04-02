@@ -38,6 +38,7 @@ class TextModelProvider:
         """
         if self._resources is None:
             device = self.get_device()
+            print(f"[Audio ModelProvider] Using device: {device}")
 
             tokenizer = AutoTokenizer.from_pretrained(settings.text_model_id)
             model = AutoModelForSequenceClassification.from_pretrained(

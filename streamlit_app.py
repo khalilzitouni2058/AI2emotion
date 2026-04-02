@@ -10,6 +10,9 @@ import numpy as np
 import streamlit as st
 
 from app.services.emotion_service import EmotionService
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # ==================== PAGE CONFIG ====================
