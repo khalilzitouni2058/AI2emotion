@@ -38,6 +38,7 @@ class ModelProvider:
         """
         if self._resources is None:
             device = self.get_device()
+            print(f"[Audio ModelProvider] Using device: {device}")
 
             model = AutoModelForAudioClassification.from_pretrained(
                 settings.audio_model_id
