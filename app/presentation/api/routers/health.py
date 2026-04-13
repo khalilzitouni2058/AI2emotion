@@ -22,12 +22,11 @@ def ready(
     service: EmotionService = Depends(get_emotion_service),
 ) -> dict:
     """
-    Readiness check. Forces model resources to be available.
+    Readiness check. Forces the audio model resources to be available.
     """
     service.model_provider.get_resources()
-    service.text_service.text_model_provider.get_resources()
 
     return {
         "status": "ready",
-        "message": "API is ready to serve requests",
+        "message": "Audio API is ready to serve requests",
     }

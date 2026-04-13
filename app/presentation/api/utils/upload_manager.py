@@ -5,20 +5,21 @@ import shutil
 from fastapi import UploadFile
 
 
-TEMP_DIR = Path("temp_uploads")
+UPLOAD_DIR = Path("data/uploads")
+UPLOAD_COPY_BUFFER_BYTES = 1024 * 1024
 
 
 def save_upload(file: UploadFile) -> Path:
     """
-    Save uploaded file to a temporary location.
+    Save uploaded file to data storage.
     """
-    TEMP_DIR.mkdir(exist_ok=True)
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
     filename = f"{uuid4()}_{file.filename}"
-    file_path = TEMP_DIR / filename
+    file_path = UPLOAD_DIR / filename
 
     with file_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        shutil.copyfileobj(file.file, buffer, length=UPLOAD_COPY_BUFFER_BYTES)
 
     return file_path
 

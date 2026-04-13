@@ -15,7 +15,13 @@ env/
 ENV/
 
 # =========================
-# 📁 Build / Distribution
+# � Node / Frontend Dependencies
+# =========================
+node_modules/
+frontend/node_modules/
+
+# =========================
+# �📁 Build / Distribution
 # =========================
 build/
 dist/
@@ -51,10 +57,12 @@ huggingface/
 *_analysis.json
 
 # =========================
-# 🎵 Temp Audio Files
+# 🎵 Audio Files & Data Storage
 # =========================
-temp_uploads/
+data/uploads/
+data/analysis/
 *.wav
+*.mp3
 
 # =========================
 # 🌐 Streamlit
