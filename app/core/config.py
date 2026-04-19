@@ -15,29 +15,30 @@ class Settings:
     max_text_length: int = 512
 
     # Audio processing settings
-    audio_duration_threshold: float = 15.0
+    audio_duration_threshold: float = 30.0  # Use chunked path for files > 30s
     audio_sampling_rate: int = 16000
-    chunk_window_size: float = 1.9
-    chunk_hop_size: float = 0.5
+    chunk_window_size: float = 2.5
+    chunk_hop_size: float = 1.5
+    chunk_inference_batch_size: int = 4
 
     # Inner sliding-window settings
-    sub_window_size: float = 0.625
-    sub_hop_size: float = 0.31
+    sub_window_size: float = 2.5
+    sub_hop_size: float = 2.5
 
     # Full-audio preprocessing
-    max_audio_duration: float = 30.0
+    max_audio_duration: float = 30.0  # Whisper's hard limit per inference
 
     # Output / display
     print_width: int = 60
 
     # Smoothing mode selection
-    smoothing_mode: str = "offline"  # options: offline, streaming
-    offline_smoothing_method: str = "interpolate"  # options: interpolate, median, none
+    smoothing_mode: str = "none"  # Disable smoothing for fast analysis
+    offline_smoothing_method: str = "none"  # options: interpolate, median, none
     streaming_smoothing_method: str = "ema"  # options: ema, none
     streaming_use_hysteresis: bool = False
 
     # Legacy / fallback smoothing parameters
-    smoothing_method: str = "combined"
+    smoothing_method: str = "none"  # Disabled for fast path
     smoothing_window_size: int = 3
     smoothing_ema_alpha: float = 0.3
     smoothing_confidence_threshold: float = 0.7

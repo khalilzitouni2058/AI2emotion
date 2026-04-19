@@ -23,6 +23,7 @@ class CLIFormatter:
 
         print(f"Total Duration: {metadata.total_duration:.2f} seconds")
         print(f"Total Chunks: {metadata.total_chunks}")
+        print(f"Smoothing Method: {metadata.smoothing_method}")
         print(f"Emotion Transitions: {summary.total_transitions}")
         print(f"Emotion Distribution: {summary.emotion_distribution}")
 

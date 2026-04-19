@@ -16,13 +16,16 @@ class EmotionMapper:
     )
 
     EMOTION_MAP = {
+        "angry": "Angry",
         "anger": "Angry",
         "annoyance": "Angry",
         "disapproval": "Angry",
 
         "fear": "Fear",
+        "fearful": "Fear",
         "nervousness": "Fear",
 
+        "happy": "Happy",
         "joy": "Happy",
         "amusement": "Happy",
         "excitement": "Happy",
@@ -42,10 +45,12 @@ class EmotionMapper:
         "embarrassment": "Neutral",
         "realization": "Neutral",
 
+        "sad": "Sad",
         "sadness": "Sad",
         "grief": "Sad",
         "disappointment": "Sad",
 
+        "surprised": "Surprise",
         "surprise": "Surprise",
         "confusion": "Surprise",
 

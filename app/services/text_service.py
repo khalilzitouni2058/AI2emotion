@@ -73,10 +73,14 @@ class TextService:
             for key, value in encoded_inputs.items()
         }
 
-        with torch.no_grad():
-            outputs = resources.model(**encoded_inputs)
+        if resources.device.type == "cuda":
+            with torch.inference_mode(), torch.autocast(device_type="cuda", dtype=torch.float16):
+                outputs = resources.model(**encoded_inputs)
+        else:
+            with torch.inference_mode():
+                outputs = resources.model(**encoded_inputs)
 
-        probabilities = F.softmax(outputs.logits, dim=-1)[0].detach().cpu()
+        probabilities = F.softmax(outputs.logits.float(), dim=-1)[0].detach().cpu()
 
         raw_probabilities = {
             resources.id2label[index]: float(probabilities[index].item())

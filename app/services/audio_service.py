@@ -1,6 +1,6 @@
 """Service layer for audio loading, preprocessing, and segmentation."""
 
-from typing import List, Tuple, Dict, Any
+from typing import Any, Dict, List, Tuple
 
 import librosa
 import numpy as np
@@ -33,6 +33,8 @@ class AudioService:
         audio_path: str,
         feature_extractor: Any,
         max_duration: float | None = None,
+        audio_array: np.ndarray | None = None,
+        sampling_rate: int | None = None,
     ) -> Dict[str, Any]:
         """
         Preprocess audio file for model inference.
@@ -48,7 +50,14 @@ class AudioService:
         if max_duration is None:
             max_duration = settings.max_audio_duration
 
-        audio_array, _ = librosa.load(audio_path, sr=settings.audio_sampling_rate)
+        if audio_array is None:
+            audio_array, sampling_rate = librosa.load(
+                audio_path,
+                sr=settings.audio_sampling_rate,
+            )
+
+        if sampling_rate is None:
+            sampling_rate = settings.audio_sampling_rate
 
         max_length = int(feature_extractor.sampling_rate * max_duration)
         if len(audio_array) > max_length:
@@ -58,7 +67,7 @@ class AudioService:
 
         inputs = feature_extractor(
             audio_array,
-            sampling_rate=feature_extractor.sampling_rate,
+            sampling_rate=sampling_rate,
             max_length=max_length,
             truncation=True,
             return_tensors="pt",

@@ -7,6 +7,7 @@ import torch
 from transformers import AutoFeatureExtractor, AutoModelForAudioClassification
 
 from app.core.config import settings
+from app.infrastructure.torch_runtime import configure_torch_runtime
 
 
 @dataclass
@@ -37,6 +38,7 @@ class ModelProvider:
             LoadedModelResources containing model, feature extractor, labels, and device.
         """
         if self._resources is None:
+            configure_torch_runtime()
             device = self.get_device()
             print(f"[Audio ModelProvider] Using device: {device}")
 

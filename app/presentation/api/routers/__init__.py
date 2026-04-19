@@ -1,3 +1,3 @@
-from . import health, text, audio
+from . import health, text, audio, platform
 
-__all__ = ["health", "text","audio"]
+__all__ = ["health", "text", "audio", "platform"]
